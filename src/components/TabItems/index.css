@@ -1,0 +1,15 @@
+.tab-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav-button {
+  border: 0px solid;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.tab-icon {
+  margin-right: 10px;
+  cursor: pointer;
+}

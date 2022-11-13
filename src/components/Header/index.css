@@ -1,0 +1,55 @@
+.upper-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left-upper-container {
+  display: flex;
+  align-items: center;
+}
+
+.main-heading {
+  margin-right: 10px;
+  font-size: 30px;
+}
+
+.link {
+  display: flex;
+  background-color: #bbd3f1;
+  align-items: center;
+  color: #4786d4;
+  height: 18px;
+  padding-bottom: 10px;
+  text-decoration: none;
+  padding: 2px;
+  padding-right: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.link-heading {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.video-icon {
+  font-size: 15px;
+  margin: 4px;
+  color: #4786d4;
+}
+
+.add-new-card-button {
+  display: flex;
+  padding: 4px;
+  background-color: #ffffff;
+  border: 0px solid;
+  border-radius: 4px;
+  box-shadow: 0px 1px 2px 0px grey;
+  cursor: pointer;
+}
+
+span {
+  font-size: 12px;
+  font-weight: 500;
+}

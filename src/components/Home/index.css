@@ -1,0 +1,59 @@
+/* Write your CSS here */
+.main-container {
+  padding: 20px;
+  height: 100vh;
+}
+
+.filter-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+.search-bar {
+  border: 1px solid;
+  display: flex;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.search-input {
+  border: 0px solid;
+}
+
+.search-icon {
+  font-size: 20px;
+}
+
+.filter-box {
+  height: 30px;
+}
+
+.popup-button {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  border: 0px solid;
+  border-radius: 4px;
+  width: 60px;
+}
+
+.filter-icon {
+  flex-grow: 1;
+}
+
+@media screen and (max-width: 768px) {
+  .filter-heading {
+    display: none;
+  }
+}
+
+.cards-list {
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: auto;
+}
+
+.card-container {
+  overflow: auto;
+}
