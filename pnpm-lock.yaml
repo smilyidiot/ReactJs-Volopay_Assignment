@@ -11,8 +11,11 @@ dependencies:
   react-bootstrap: 2.6.0_react-dom@17.0.1+react@17.0.1
   react-dom: 17.0.1_react@17.0.1
   react-icons: 4.6.0_react@17.0.1
+  react-infinite-scroller: 1.2.6_react@17.0.1
   react-loader-spinner: 4.0.0_react-dom@17.0.1+react@17.0.1
+  react-paginate: 8.1.4_react@17.0.1
   react-router-dom: 5.2.0_react@17.0.1
+  reactjs-pagination: 0.0.8_react@17.0.1
   reactjs-popup: 2.0.5_react-dom@17.0.1+react@17.0.1
   recharts: 2.0.10_react-dom@17.0.1+react@17.0.1
   styled-components: 5.3.0_react-dom@17.0.1+react@17.0.1
@@ -11961,6 +11964,15 @@ packages:
       react: '*'
     resolution:
       integrity: sha512-rR/L9m9340yO8yv1QT1QurxWQvWpbNHqVX0fzMln2HEb9TEIrQRGsqiNFQfiv9/JEUbyHmHPlNTB2LWm2Ttz0g==
+  /react-infinite-scroller/1.2.6_react@17.0.1:
+    dependencies:
+      prop-types: 15.8.1
+      react: 17.0.1
+    dev: false
+    peerDependencies:
+      react: ^0.14.9 || ^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    resolution:
+      integrity: sha512-mGdMyOD00YArJ1S1F3TVU9y4fGSfVVl6p5gh/Vt4u99CJOptfVu/q5V/Wlle72TMgYlBwIhbxK5wF0C/R33PXQ==
   /react-is/16.10.2:
     dev: false
     resolution:
@@ -11990,6 +12002,15 @@ packages:
       react-dom: '*'
     resolution:
       integrity: sha512-RU2vpEej6G4ECei0h3q6bgLU10of9Lw5O+4AwF/mtkrX5oY20Sh/AxoPJ7etbrs/7Q3u4jN5qwCwGLRKCHpk6g==
+  /react-paginate/8.1.4_react@17.0.1:
+    dependencies:
+      prop-types: 15.8.1
+      react: 17.0.1
+    dev: false
+    peerDependencies:
+      react: ^16 || ^17 || ^18
+    resolution:
+      integrity: sha512-c3rxjcTEqeDQa6LqXifxLeFguY2qy2CHGRphVjHLFFMGfIHyaJ+v3bOvIlLYEeohwQ1q+cQpknjsqBVrkc/SNA==
   /react-refresh/0.8.3:
     dev: true
     engines:
@@ -12167,6 +12188,15 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-lG9c9UuMHdcAexXtigOZLX8exLWkW0Ku29qPRU8uhF2R9BN96dLCt0psvzPLlHc5OWkgymP3qwTRgbnw5BKx3w==
+  /reactjs-pagination/0.0.8_react@17.0.1:
+    dependencies:
+      react: 17.0.1
+    dev: false
+    peerDependencies:
+      classnames: ^2.2.5
+      react: ~15.2.1
+    resolution:
+      integrity: sha512-vs+d+ze61EZSdYWZcSc0PQagfzdBHAWBZ2ybnln2u+fZBL5WfkgBiKgfQt53CT3jkKu18W25f0MLRiZ5uEH5Ug==
   /reactjs-popup/2.0.5_react-dom@17.0.1+react@17.0.1:
     dependencies:
       react: 17.0.1
@@ -14900,9 +14930,12 @@ specifiers:
   react-bootstrap: 2.6.0
   react-dom: 17.0.1
   react-icons: 4.6.0
+  react-infinite-scroller: 1.2.6
   react-loader-spinner: 4.0.0
+  react-paginate: 8.1.4
   react-router-dom: 5.2.0
   react-scripts: 4.0.3
+  reactjs-pagination: 0.0.8
   reactjs-popup: 2.0.5
   recharts: 2.0.10
   styled-components: 5.3.0

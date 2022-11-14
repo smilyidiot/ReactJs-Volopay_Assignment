@@ -12,4 +12,16 @@
 .tab-icon {
   margin-right: 10px;
   cursor: pointer;
+  font-size: 18px;
+}
+
+@media screen and (max-width: 768px) {
+  .alignment-container {
+    display: none;
+  }
+}
+
+.align-button {
+  border: 0px solid;
+  background-color: transparent;
 }

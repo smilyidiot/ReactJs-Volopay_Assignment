@@ -1,7 +1,18 @@
 /* Write your CSS here */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+  width: 100%;
+}
+
 .main-container {
   padding: 20px;
   height: 100vh;
+  width: 100%;
 }
 
 .filter-container {
@@ -35,6 +46,46 @@
   border: 0px solid;
   border-radius: 4px;
   width: 60px;
+  cursor: pointer;
+}
+
+.popup-container {
+  background-color: #fdf6f6;
+  width: 300px;
+  padding: 10px;
+  border-radius: 6px;
+  box-shadow: 0px 0px 4px grey;
+}
+
+.popup-heading {
+  font-size: 12px;
+}
+
+.type-container {
+  padding: 0px;
+}
+
+.type-heading {
+  font-size: 14px;
+  color: #888888;
+}
+
+.checkbox-item {
+  display: flex;
+  margin-right: 10px;
+}
+
+.type-list {
+  display: flex;
+  margin-left: 0px;
+  list-style-type: none;
+  justify-content: flex-start;
+}
+
+@media screen and (max-width: 768px) {
+  .popup-container {
+    width: 200px;
+  }
 }
 
 .filter-icon {
@@ -47,6 +98,42 @@
   }
 }
 
+.select-options {
+  margin: 10px;
+  margin-bottom: 20px;
+  color: #000000;
+  background-color: #ddd8d8;
+  font-size: 14px;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.form-apply-button {
+  flex-grow: 1;
+  margin: 10px;
+  background-color: crimson;
+  border: 0px solid;
+  border-radius: 4px;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.form-close-button {
+  flex-grow: 1;
+  margin: 10px;
+  background-color: #ffffff;
+  border: 1px solid;
+  border-radius: 4px;
+  color: #000000;
+  padding: 4px;
+  cursor: pointer;
+}
+
 .cards-list {
   list-style-type: none;
   display: flex;
@@ -54,6 +141,12 @@
   overflow: auto;
 }
 
-.card-container {
+.card-home-container {
+  width: 100%;
   overflow: auto;
+}
+
+.card-holder-container {
+  display: flex;
+  flex-direction: column;
 }

@@ -4,26 +4,26 @@ import {BsFillGridFill} from 'react-icons/bs'
 import './index.css'
 
 const TabItems = props => {
-  const {cardStatus, alignGrid} = props
+  const {cardStatus, alignGrid, openYoursTab} = props
 
   const yoursCard = () => {
-    cardStatus('active', '1')
+    openYoursTab(true)
   }
 
   const allCard = () => {
-    cardStatus('', '0')
+    cardStatus('active')
   }
 
   const blockedCard = () => {
-    cardStatus('blocked', '2')
+    cardStatus('blocked')
   }
 
   const grid = () => {
-    alignGrid('2')
+    alignGrid(false)
   }
 
   const horizontal = () => {
-    alignGrid('1')
+    alignGrid(true)
   }
 
   return (
@@ -40,10 +40,10 @@ const TabItems = props => {
         </button>
       </nav>
       <nav className="alignment-container">
-        <button type="button" onClick={grid}>
+        <button type="button" className="align-button" onClick={grid}>
           <BsFillGridFill className="tab-icon" />
         </button>
-        <button type="button" onClick={horizontal}>
+        <button type="button" className="align-button" onClick={horizontal}>
           <VscThreeBars className="tab-icon" />
         </button>
       </nav>

@@ -2,9 +2,8 @@
 import {Component} from 'react'
 import Popup from 'reactjs-popup'
 import Loader from 'react-loader-spinner'
-
-// import {BsFillGridFill} from 'react-icons/bs'
-// import {VscThreeBars} from 'react-icons/vsc'
+import InfiniteScroll from 'react-infinite-scroller'
+import ReactPaginate from 'react-paginate'
 
 import {BiSearchAlt2, BiFilter} from 'react-icons/bi'
 
@@ -14,22 +13,18 @@ import CardsList from '../CardsList'
 
 import './index.css'
 
-// const tabsList = [
-//   {tabId: 'active', displayText: 'Your'},
-//   {tabId: null, displayText: 'All'},
-//   {tabId: 'blocked', displayText: 'Blocked'},
-// ]
-
 class Home extends Component {
   state = {
     isLoading: true,
     activeTab: 'active',
+    yoursTab: false,
     searchValue: '',
     checkSubscription: '',
     checkBurner: '',
-    selectValue: '',
+    selectValue: 'all',
     cardsData: {},
-    contentSize: '40%',
+    contentSize: false,
+    setItemOffSet: 0,
   }
 
   componentDidMount() {
@@ -42,26 +37,7 @@ class Home extends Component {
 
     const response = await fetch(url)
     const data = await response.json()
-    console.log(data)
-
-    //  {
-    //         "name": "MemoStates",
-    //         "owner_name": "Rohit",
-    //         "budget_name": "Software subscription",
-    //         "owner_id": 2,
-    //         "spent": {
-    //             "value": 100,
-    //             "currency": "SGD"
-    //         },
-    //         "available_to_spend": {
-    //             "value": 1000,
-    //             "currency": "SGD"
-    //         },
-    //         "card_type": "burner",
-    //         "expiry": "9 feb",
-    //         "limit": 100,
-    //         "status": "active"
-    //     }
+    // console.log(data)
 
     if (response.ok) {
       const newData = data.map(each => ({
@@ -92,12 +68,12 @@ class Home extends Component {
 
   onCheckSubscription = event => {
     this.setState({checkSubscription: event.target.checked})
-    console.log('event of subs', event)
+    // console.log('event of subs', event)
   }
 
   onCheckBurner = event => {
     this.setState({checkBurner: event.target.checked})
-    console.log('event of burner', event)
+    // console.log('event of burner', event)
   }
 
   onClickSelectOptions = event => {
@@ -108,131 +84,234 @@ class Home extends Component {
     event.preventDefault()
 
     const {checkSubscription, checkBurner, selectValue} = this.state
+    this.setState({
+      checkSubscription,
+      checkBurner,
+      selectValue,
+    })
+
     console.log('checkSubscription', checkSubscription)
     console.log('checkBurner', checkBurner)
     console.log('selectValue', selectValue)
-
-    if (checkSubscription) {
-      this.setState({checkSubscription})
-    } else {
-      this.setState({checkSubscription: ''})
-    }
   }
 
-  showCards = (cardType, number) => {
-    this.setState({activeTab: cardType})
-    const {activeTab} = this.state
-    console.log(activeTab, number)
+  showCards = cardType => {
+    this.setState({activeTab: cardType, yoursTab: false})
   }
 
-  showAlignment = noOfItems => {
-    if (noOfItems === '2') {
-      const twoItems = {width: '40%'}
-      this.setState({contentSize: twoItems})
-    } else {
-      const singleItem = {width: '80%'}
-      this.setState({contentSize: singleItem})
-    }
+  yoursTabActive = bool => {
+    this.setState({yoursTab: bool})
+  }
 
-    const {contentSize} = this.state
-    console.log('contentSize', contentSize)
+  showAlignment = queue => {
+    this.setState({contentSize: queue})
+  }
+
+  closeButton = () => {
+    this.setState({
+      checkSubscription: false,
+      checkBurner: false,
+      selectValue: 'all',
+    })
   }
 
   renderViewItems = () => {
-    const {cardsData, searchValue} = this.state
+    const {
+      cardsData,
+      activeTab,
+      yoursTab,
+      searchValue,
+      checkSubscription,
+      checkBurner,
+      selectValue,
+      contentSize,
+    } = this.state
+    console.log(checkSubscription, checkBurner, selectValue)
 
-    const searchResults = cardsData.filter(each =>
+    let openYourCards
+    if (yoursTab) {
+      openYourCards = cardsData.filter(each => each.ownerName === 'Akamaru')
+    } else {
+      openYourCards = cardsData
+    }
+
+    let subscriptionCards
+    if (checkSubscription) {
+      subscriptionCards = openYourCards.filter(each =>
+        each.cardType.includes('subscription'),
+      )
+    } else {
+      subscriptionCards = openYourCards
+    }
+
+    let burnerCards
+    if (checkBurner) {
+      burnerCards = subscriptionCards.filter(each =>
+        each.cardType.includes('burner'),
+      )
+    } else {
+      burnerCards = subscriptionCards
+    }
+
+    const tabCards = burnerCards.filter(each => each.status === activeTab)
+
+    const searchResults = tabCards.filter(each =>
       each.name.toLowerCase().includes(searchValue.toLowerCase()),
     )
-    // console.log('searchResults', searchResults)
 
     return (
-      <div className="main-container">
-        <Header />
-        <TabItems cardStatus={this.showCards} alignGrid={this.showAlignment} />
-        <hr />
-        <div className="filter-container">
-          <div className="search-bar">
-            <input
-              type="search"
-              className="search-input"
-              onChange={this.onSearch}
+      <div style={{height: '700px', overflow: 'auto'}}>
+        <InfiniteScroll
+          pageStart={0}
+          loadMore={this.renderViewItems}
+          hasMore={false}
+          loader={
+            <div className="loader" key={0}>
+              Loading...
+            </div>
+          }
+          useWindow={false}
+        >
+          <div className="main-container">
+            <Header />
+            <TabItems
+              cardStatus={this.showCards}
+              openYoursTab={this.yoursTabActive}
+              alignGrid={this.showAlignment}
             />
-            <BiSearchAlt2 className="search-icon" />
-          </div>
-          <div className="filter-box">
-            <Popup
-              modal
-              position="left bottom"
-              trigger={
-                <button type="button" className="popup-button">
-                  <BiFilter className="filter-icon" />
-                  <p className="filter-heading">Filter</p>
-                </button>
-              }
-            >
-              {close => (
-                <form
-                  className="popup-container"
-                  onSubmit={this.onSubmitButton}
-                >
-                  <h1 className="popup-heading">Filter</h1>
-                  <hr />
-                  <div className="type-container">
-                    <h1 className="type-heading">Type</h1>
-                    <ul className="type-list">
-                      <li className="checkbox-item">
-                        <input
-                          type="checkbox"
-                          id="subscription"
-                          className="checkbox"
-                          onChange={this.onCheckSubscription}
-                        />
-                        <label className="label" htmlFor="subscription">
-                          Subscription
-                        </label>
-                      </li>
-                      <li className="checkbox-item">
-                        <input
-                          type="checkbox"
-                          id="burner"
-                          className="checkbox"
-                          onChange={this.onCheckBurner}
-                        />
-                        <label className="label" htmlFor="burner">
-                          Burner
-                        </label>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="card-holder-container">
-                    <select
-                      className="select-options"
-                      onChange={this.onClickSelectOptions}
-                      placeholder="Select cardholder"
-                    >
-                      <option value="limit">Limit</option>
-                      <option value="expiry">Expiry</option>
-                    </select>
-                  </div>
-                  <div className="button-container">
-                    <button type="submit">Apply</button>
-                    <button type="button" onClick={() => close()}>
-                      Clear
+            <hr />
+            <div className="filter-container">
+              <div className="search-bar">
+                <input
+                  type="search"
+                  className="search-input"
+                  onChange={this.onSearch}
+                />
+                <BiSearchAlt2 className="search-icon" />
+              </div>
+              <div className="filter-box">
+                <Popup
+                  trigger={
+                    <button type="button" className="popup-button">
+                      <BiFilter className="filter-icon" />
+                      <p className="filter-heading">Filter</p>
                     </button>
-                  </div>
-                </form>
-              )}
-            </Popup>
+                  }
+                  position="left top"
+                >
+                  {close => (
+                    <div>
+                      <form
+                        className="popup-container"
+                        onSubmit={this.onSubmitButton}
+                      >
+                        <h1 className="popup-heading">Filters</h1>
+                        <hr />
+                        <div className="type-container">
+                          <h1 className="type-heading">Type</h1>
+                          <ul className="type-list">
+                            <li className="checkbox-item">
+                              <input
+                                type="checkbox"
+                                id="subscription"
+                                className="checkbox"
+                                onChange={this.onCheckSubscription}
+                              />
+                              <label className="label" htmlFor="subscription">
+                                Subscription
+                              </label>
+                            </li>
+                            <li className="checkbox-item">
+                              <input
+                                type="checkbox"
+                                id="burner"
+                                className="checkbox"
+                                onChange={this.onCheckBurner}
+                              />
+                              <label className="label" htmlFor="burner">
+                                Burner
+                              </label>
+                            </li>
+                          </ul>
+                        </div>
+                        <div className="card-holder-container">
+                          <h1 className="type-heading">CardHolder</h1>
+                          <select
+                            id="card-holder"
+                            className="select-options"
+                            onChange={this.onClickSelectOptions}
+                            placeholder="Select cardholder"
+                          >
+                            <option default value="limit">
+                              Limit
+                            </option>
+                            <option value="expiry">Expiry</option>
+                          </select>
+                        </div>
+                        <div className="button-container">
+                          <button type="submit" className="form-apply-button">
+                            Apply
+                          </button>
+                          <button
+                            type="button"
+                            className="form-close-button"
+                            onClick={this.closeButton}
+                          >
+                            Clear
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  )}
+                </Popup>
+              </div>
+            </div>
+            <div className="card-home-container">
+              <ul className="cards-list">
+                {searchResults.map(eachCard => (
+                  <CardsList
+                    key={eachCard.id}
+                    content={eachCard}
+                    queue={contentSize}
+                  />
+                ))}
+              </ul>
+            </div>
           </div>
-        </div>
-        <div className="card-container">
-          <ul className="cards-list">
-            {searchResults.map(eachCard => (
-              <CardsList key={eachCard.id} content={eachCard} />
-            ))}
-          </ul>
-        </div>
+        </InfiniteScroll>
+      </div>
+    )
+  }
+
+  paginateItems = () => {
+    const {cardsData} = this.state
+
+    const itemOffSet = 0
+    const endOffSet = itemOffSet + 10
+
+    console.log(`loading items from ${itemOffSet} to ${endOffSet}`)
+
+    const currentItems = cardsData.length.slice(itemOffSet, endOffSet)
+    const pageCount = Math.ceil(cardsData.length / 10)
+
+    const handlePageClick = event => {
+      const newOffSet = (event.selected * 10) % cardsData.length
+
+      this.setState({setItemOffSet: newOffSet})
+    }
+
+    return (
+      <div id="container">
+        {this.renderViewItems()}
+        <ReactPaginate
+          breakLabel="..."
+          nextLabel="next"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={10}
+          pageCount={pageCount}
+          previousLabel="< previous"
+          renderOnZeroPageCount={null}
+        />
       </div>
     )
   }
@@ -241,15 +320,15 @@ class Home extends Component {
     const {isLoading} = this.state
 
     return (
-      <>
+      <div className="home-container">
         {isLoading ? (
           <div className="loader-container">
-            <Loader type="ThreeDots" color="#ffffff" height={50} width={50} />
+            <Loader type="TailSpin" height={50} width={50} />
           </div>
         ) : (
           this.renderViewItems()
         )}
-      </>
+      </div>
     )
   }
 }

@@ -1,4 +1,5 @@
 import {Component} from 'react'
+import Loader from 'react-loader-spinner'
 
 import {BsDot} from 'react-icons/bs'
 import {ImFire} from 'react-icons/im'
@@ -9,7 +10,7 @@ import './index.css'
 
 class CardItemDetails extends Component {
   state = {
-    // isLoading: false,
+    isLoading: false,
     cardDetails: {},
   }
 
@@ -18,7 +19,7 @@ class CardItemDetails extends Component {
   }
 
   getEachCard = async () => {
-    // this.setState({isLoading: true})
+    this.setState({isLoading: true})
 
     const {match} = this.props
     const {url} = match
@@ -27,7 +28,7 @@ class CardItemDetails extends Component {
 
     const response = await fetch(fetchUrl)
     const data = await response.json()
-    console.log(data)
+
     if (response.ok) {
       const newData = {
         id: data.id,
@@ -42,10 +43,11 @@ class CardItemDetails extends Component {
         limit: data.limit,
         status: data.status,
       }
+      console.log(newData)
 
-      this.setState({cardDetails: newData})
+      this.setState({cardDetails: newData, isLoading: false})
     } else {
-      this.setState({cardDetails: ''})
+      this.setState({cardDetails: '', isLoading: false})
     }
   }
 
@@ -61,13 +63,13 @@ class CardItemDetails extends Component {
     } = cardDetails
 
     return (
-      <div className="each-card-container">
+      <div className="card-browser-container">
         <div className="upper-details">
           <div className="upper-left-container">
             <h1 className="name">{name}</h1>
             <div className="bio-container">
               <span className="desc">{ownerName}</span>
-              <BsDot className="dot-icon" />
+              <BsDot className="bs-dot" />
               <span className="desc">{budgetName}</span>
             </div>
           </div>
@@ -76,26 +78,30 @@ class CardItemDetails extends Component {
           </div>
         </div>
         <div className="card-type-container">
-          <p className="card-type">BURNER</p>
-          <p className="desc">Expires: {expiry}</p>
+          <span className="card-type">BURNER</span>
+          <span className="desc">Expires: {expiry}</span>
         </div>
         <hr />
         <div className="spent-container">
           <div className="notation">
             <GoPrimitiveDot className="dot" />
-            <p className="notation-name">Spent</p>
+            <span className="notation-name">Spent</span>
           </div>
           <div className="currency">
-            {spent.value} {spent.currency}
+            <span>
+              {spent.value} {spent.currency}
+            </span>
           </div>
         </div>
         <div className="spent-container">
           <div className="notation">
             <GoPrimitiveDot className="dot" />
-            <p className="notation-name">Available to spend</p>
+            <span className="notation-name">Available to spend</span>
           </div>
           <div className="available-currency">
-            {availableToSpend.value} {availableToSpend.currency}
+            <span>
+              {availableToSpend.value} {availableToSpend.currency}
+            </span>
           </div>
         </div>
       </div>
@@ -112,14 +118,16 @@ class CardItemDetails extends Component {
       availableToSpend,
       limit,
     } = cardDetails
+
+    console.log(spent)
     return (
-      <div className="each-card-container">
+      <div className="card-browser-container">
         <div className="upper-details">
           <div className="upper-left-container">
             <h1 className="name">{name}</h1>
             <div className="bio-container">
               <span className="desc">{ownerName}</span>
-              <BsDot className="dot-icon" />
+              <BsDot className="bs-dot" />
               <span className="desc">{budgetName}</span>
             </div>
           </div>
@@ -128,26 +136,30 @@ class CardItemDetails extends Component {
           </div>
         </div>
         <div className="card-type-container">
-          <p className="card-type">SUBSCRIPTION</p>
-          <p className="expires">December Limit: {limit} SGD</p>
+          <span className="card-type">SUBSCRIPTION</span>
+          <span className="expires">December Limit: {limit}</span>
         </div>
         <hr />
         <div className="spent-container">
           <div className="notation">
             <GoPrimitiveDot className="dot" />
-            <p className="spent">Spent</p>
+            <span className="spent">Spent</span>
           </div>
           <div className="spent-currency">
-            {spent.value} {spent.currency}
+            <span className="spent-value">
+              {/* {spent.value} {spent.currency} */}
+            </span>
           </div>
         </div>
         <div className="spent-container">
           <div className="notation">
             <GoPrimitiveDot className="dot" />
-            <p className="notation-name">Available to spend</p>
+            <span className="notation-name">Available to spend</span>
           </div>
           <div className="available-currency">
-            {availableToSpend.value} {availableToSpend.currency}
+            <span>
+              {/* {availableToSpend.value} {availableToSpend.currency} */}
+            </span>
           </div>
         </div>
       </div>
@@ -155,12 +167,24 @@ class CardItemDetails extends Component {
   }
 
   render() {
-    const {cardDetails} = this.state
+    const {cardDetails, isLoading} = this.state
     const {cardType} = cardDetails
-    const showCards = cardType === 'burner'
+    const showBurnerCard = cardType === 'burner'
 
     return (
-      <>{showCards ? this.showBurnerCards() : this.showSubscriptionCards()}</>
+      <div className="card-browser">
+        {isLoading ? (
+          <div className="leader">
+            <Loader type="Oval" height={50} width={50} />
+          </div>
+        ) : (
+          <>
+            {showBurnerCard
+              ? this.showBurnerCards()
+              : this.showSubscriptionCards()}
+          </>
+        )}
+      </div>
     )
   }
 }
