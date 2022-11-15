@@ -6,6 +6,13 @@
   width: 40%;
 }
 
+@media screen and (max-width: 768px) {
+  .each-card-container {
+    width: 60%;
+    background-color: yellowgreen;
+  }
+}
+
 .link {
   height: 100%;
   text-decoration: none;

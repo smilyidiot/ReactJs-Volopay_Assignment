@@ -21,10 +21,9 @@ class Home extends Component {
     searchValue: '',
     checkSubscription: '',
     checkBurner: '',
-    selectValue: 'all',
+    selectValue: '',
     cardsData: {},
     contentSize: false,
-    setItemOffSet: 0,
   }
 
   componentDidMount() {
@@ -52,6 +51,9 @@ class Home extends Component {
         expiry: each.expiry,
         limit: each.limit,
         status: each.status,
+        filterSubs: '',
+        filterBurner: '',
+        filterSelectVal: '',
       }))
 
       this.setState({cardsData: newData, isLoading: false})
@@ -84,15 +86,12 @@ class Home extends Component {
     event.preventDefault()
 
     const {checkSubscription, checkBurner, selectValue} = this.state
-    this.setState({
-      checkSubscription,
-      checkBurner,
-      selectValue,
-    })
 
-    console.log('checkSubscription', checkSubscription)
-    console.log('checkBurner', checkBurner)
-    console.log('selectValue', selectValue)
+    this.setState({
+      filterSubs: checkSubscription,
+      filterBurner: checkBurner,
+      filterSelectVal: selectValue,
+    })
   }
 
   showCards = cardType => {
@@ -109,9 +108,9 @@ class Home extends Component {
 
   closeButton = () => {
     this.setState({
-      checkSubscription: false,
-      checkBurner: false,
-      selectValue: 'all',
+      filterSubs: false,
+      filterBurner: false,
+      filterSelectVal: undefined,
     })
   }
 
@@ -121,12 +120,11 @@ class Home extends Component {
       activeTab,
       yoursTab,
       searchValue,
-      checkSubscription,
-      checkBurner,
-      selectValue,
+      filterSubs,
+      filterBurner,
+      filterSelectVal,
       contentSize,
     } = this.state
-    console.log(checkSubscription, checkBurner, selectValue)
 
     let openYourCards
     if (yoursTab) {
@@ -135,25 +133,33 @@ class Home extends Component {
       openYourCards = cardsData
     }
 
-    let subscriptionCards
-    if (checkSubscription) {
-      subscriptionCards = openYourCards.filter(each =>
-        each.cardType.includes('subscription'),
+    let filterCards
+
+    if (filterSubs && filterBurner) {
+      filterCards = openYourCards.filter(
+        each => each.cardType === 'burner' || 'subscription',
       )
+    } else if (filterSubs) {
+      filterCards = openYourCards.filter(
+        each => each.cardType === 'subscription',
+      )
+    } else if (filterBurner) {
+      filterCards = openYourCards.filter(each => each.cardType === 'burner')
     } else {
-      subscriptionCards = openYourCards
+      filterCards = openYourCards
     }
 
-    let burnerCards
-    if (checkBurner) {
-      burnerCards = subscriptionCards.filter(each =>
-        each.cardType.includes('burner'),
+    console.log('success', filterSelectVal)
+    let filterSelectCards
+    if (filterSelectVal !== undefined) {
+      filterSelectCards = filterCards.filter(each =>
+        each.ownerName.includes(filterSelectVal),
       )
     } else {
-      burnerCards = subscriptionCards
+      filterSelectCards = filterCards
     }
 
-    const tabCards = burnerCards.filter(each => each.status === activeTab)
+    const tabCards = filterSelectCards.filter(each => each.status === activeTab)
 
     const searchResults = tabCards.filter(each =>
       each.name.toLowerCase().includes(searchValue.toLowerCase()),
@@ -242,10 +248,11 @@ class Home extends Component {
                             onChange={this.onClickSelectOptions}
                             placeholder="Select cardholder"
                           >
-                            <option default value="limit">
-                              Limit
-                            </option>
-                            <option value="expiry">Expiry</option>
+                            {cardsData.map(each => (
+                              <option value={each.ownerName} key={each.id}>
+                                {each.ownerName}
+                              </option>
+                            ))}
                           </select>
                         </div>
                         <div className="button-container">
