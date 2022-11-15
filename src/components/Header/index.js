@@ -2,7 +2,6 @@ import {BiVideo} from 'react-icons/bi'
 import {AiOutlinePlus} from 'react-icons/ai'
 
 import './index.css'
-import Popup from 'reactjs-popup'
 
 const Header = () => {
   const addNewCard = () => {
@@ -20,25 +19,14 @@ const Header = () => {
         </a>
       </div>
       <div className="right-upper-container">
-        <Popup
-          trigger={
-            <button
-              type="button"
-              className="add-new-card-button"
-              onClick={addNewCard}
-            >
-              <AiOutlinePlus className="plus-icon" />
-              <span className="virtual">Virtual card</span>
-            </button>
-          }
-          position="left bottom"
+        <button
+          type="button"
+          className="add-new-card-button"
+          onClick={addNewCard}
         >
-          {close => (
-            <div className="new-card-container">
-              <h1 style={{fontSize: '12px'}}>Here new card will be added</h1>
-            </div>
-          )}
-        </Popup>
+          <AiOutlinePlus className="plus-icon" />
+          <span className="virtual">Virtual card</span>
+        </button>
       </div>
     </div>
   )

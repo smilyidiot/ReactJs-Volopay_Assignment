@@ -110,14 +110,7 @@ class CardItemDetails extends Component {
 
   showSubscriptionCards = () => {
     const {cardDetails} = this.state
-    const {
-      name,
-      ownerName,
-      budgetName,
-      spent,
-      availableToSpend,
-      limit,
-    } = cardDetails
+    const {name, ownerName, budgetName, spent, limit} = cardDetails
 
     console.log(spent)
     return (

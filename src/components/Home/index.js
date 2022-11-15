@@ -205,71 +205,69 @@ class Home extends Component {
                   }
                   position="left top"
                 >
-                  {close => (
-                    <div>
-                      <form
-                        className="popup-container"
-                        onSubmit={this.onSubmitButton}
-                      >
-                        <h1 className="popup-heading">Filters</h1>
-                        <hr />
-                        <div className="type-container">
-                          <h1 className="type-heading">Type</h1>
-                          <ul className="type-list">
-                            <li className="checkbox-item">
-                              <input
-                                type="checkbox"
-                                id="subscription"
-                                className="checkbox"
-                                onChange={this.onCheckSubscription}
-                              />
-                              <label className="label" htmlFor="subscription">
-                                Subscription
-                              </label>
-                            </li>
-                            <li className="checkbox-item">
-                              <input
-                                type="checkbox"
-                                id="burner"
-                                className="checkbox"
-                                onChange={this.onCheckBurner}
-                              />
-                              <label className="label" htmlFor="burner">
-                                Burner
-                              </label>
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="card-holder-container">
-                          <h1 className="type-heading">CardHolder</h1>
-                          <select
-                            id="card-holder"
-                            className="select-options"
-                            onChange={this.onClickSelectOptions}
-                            placeholder="Select cardholder"
-                          >
-                            {cardsData.map(each => (
-                              <option value={each.ownerName} key={each.id}>
-                                {each.ownerName}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                        <div className="button-container">
-                          <button type="submit" className="form-apply-button">
-                            Apply
-                          </button>
-                          <button
-                            type="button"
-                            className="form-close-button"
-                            onClick={this.closeButton}
-                          >
-                            Clear
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  )}
+                  <div>
+                    <form
+                      className="popup-container"
+                      onSubmit={this.onSubmitButton}
+                    >
+                      <h1 className="popup-heading">Filters</h1>
+                      <hr />
+                      <div className="type-container">
+                        <h1 className="type-heading">Type</h1>
+                        <ul className="type-list">
+                          <li className="checkbox-item">
+                            <input
+                              type="checkbox"
+                              id="subscription"
+                              className="checkbox"
+                              onChange={this.onCheckSubscription}
+                            />
+                            <label className="label" htmlFor="subscription">
+                              Subscription
+                            </label>
+                          </li>
+                          <li className="checkbox-item">
+                            <input
+                              type="checkbox"
+                              id="burner"
+                              className="checkbox"
+                              onChange={this.onCheckBurner}
+                            />
+                            <label className="label" htmlFor="burner">
+                              Burner
+                            </label>
+                          </li>
+                        </ul>
+                      </div>
+                      <div className="card-holder-container">
+                        <h1 className="type-heading">CardHolder</h1>
+                        <select
+                          id="card-holder"
+                          className="select-options"
+                          onChange={this.onClickSelectOptions}
+                          placeholder="Select cardholder"
+                        >
+                          {cardsData.map(each => (
+                            <option value={each.ownerName} key={each.id}>
+                              {each.ownerName}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="button-container">
+                        <button type="submit" className="form-apply-button">
+                          Apply
+                        </button>
+                        <button
+                          type="button"
+                          className="form-close-button"
+                          onClick={this.closeButton}
+                        >
+                          Clear
+                        </button>
+                      </div>
+                    </form>
+                  </div>
                 </Popup>
               </div>
             </div>
@@ -298,13 +296,11 @@ class Home extends Component {
 
     console.log(`loading items from ${itemOffSet} to ${endOffSet}`)
 
-    const currentItems = cardsData.length.slice(itemOffSet, endOffSet)
     const pageCount = Math.ceil(cardsData.length / 10)
 
     const handlePageClick = event => {
       const newOffSet = (event.selected * 10) % cardsData.length
-
-      this.setState({setItemOffSet: newOffSet})
+      console.log(newOffSet)
     }
 
     return (
